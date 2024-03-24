@@ -20,8 +20,8 @@ import com.init.products.entitys.Product;
 
 
 
-@RestController
-@RequestMapping("products")
+@RestController//que la clase un controlador de rest
+@RequestMapping("products")//si la url tiene esa palabra va a entrar a esa clase
 public class ProductsREST {
 	
 	
@@ -60,7 +60,7 @@ public class ProductsREST {
 	
 	//queremos consultarle solo un producto
 	
-	@RequestMapping(value="{productId}")
+	@GetMapping(value="{productId}")
 	public ResponseEntity<Product> getProductById(@PathVariable("productId") Long productId)
 	{
 		Optional<Product> optionalProduct = productDAO.findById(productId);
@@ -87,7 +87,7 @@ public class ProductsREST {
 		return ResponseEntity.ok(null); 
 	}
 	
-	//Ahora haremos una actualización de nuestro producto. El nombre no el id 
+	//Ahora haremos una actualización de nuestro producto. El nombre no el id
 	@PutMapping
 	public ResponseEntity<Product> updateProduct(@RequestBody Product product){
 		Optional<Product> optionalProduct = productDAO.findById(product.getId());
