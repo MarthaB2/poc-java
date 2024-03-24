@@ -16,16 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.init.products.dao.ProductsDAO;
 import com.init.products.entitys.Product;
- 
-
 
 
 @RestController//que la clase un controlador de rest
 @RequestMapping("products")//si la url tiene esa palabra va a entrar a esa clase
 public class ProductsREST {
-	
-	
-	//prueba 1
+
+
+    //prueba 1
 	/*
 	//@GetMapping
 	@RequestMapping(value="hello",method=RequestMethod.GET)
@@ -33,8 +31,8 @@ public class ProductsREST {
 		return "Hello Word";
 	}
 	*/
-	
-	//prueba 2
+
+    //prueba 2
 	/*
 	@GetMapping
 	public ResponseEntity<Product> getProduct()
@@ -45,61 +43,56 @@ public class ProductsREST {
 		return ResponseEntity.ok(product);
 	}
 	*/
-	//Ahora queremos leer los productos desde una base de datos
-	@Autowired
-	private ProductsDAO productDAO;
-	
-	
-	@GetMapping
-	public ResponseEntity<List<Product>> getProduct()
-	{
-		List<Product> products = productDAO.findAll();
-		return ResponseEntity.ok(products);
-	}
-	
-	
-	//queremos consultarle solo un producto
-	
-	@GetMapping(value="{productId}")
-	public ResponseEntity<Product> getProductById(@PathVariable("productId") Long productId)
-	{
-		Optional<Product> optionalProduct = productDAO.findById(productId);
-		if(optionalProduct.isPresent()) {
-			return ResponseEntity.ok(optionalProduct.get()); 
-		}else {
-		return ResponseEntity.noContent().build();
-		}
-	}
-	
-	//si queremos hacer un servicio para insertar un nuevo valor a la base de datos. 
-	@PostMapping
-	public ResponseEntity<Product> createProduct(@RequestBody  Product product)
-	{
-		Product newProduct = productDAO.save(product);
-		return ResponseEntity.ok(newProduct); 
-	}
-	
-	//Ahora vamos a hacer un método para borrar un producto. 
-	@DeleteMapping(value="{productId}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId)
-	{
-		productDAO.deleteById(productId);
-		return ResponseEntity.ok(null); 
-	}
-	
-	//Ahora haremos una actualización de nuestro producto. El nombre no el id
-	@PutMapping
-	public ResponseEntity<Product> updateProduct(@RequestBody Product product){
-		Optional<Product> optionalProduct = productDAO.findById(product.getId());
-		if(optionalProduct.isPresent()) {
-			Product updateProduct = optionalProduct.get();
-			updateProduct.setName(product.getName());
-			productDAO.save(updateProduct);
-			return ResponseEntity.ok(updateProduct);
-		}
-		else {
-		return ResponseEntity.notFound().build();
-		}
-	}
-	
+    //Ahora queremos leer los productos desde una base de datos
+    @Autowired
+    private ProductsDAO productDAO;
+
+
+    @GetMapping
+    public ResponseEntity<List<Product>> getProduct() {
+        List<Product> products = productDAO.findAll();
+        return ResponseEntity.ok(products);
+    }
+
+
+    //queremos consultarle solo un producto
+
+    @GetMapping(value = "{productId}")
+    public ResponseEntity<Product> getProductById(@PathVariable("productId") Long productId) {
+        Optional<Product> optionalProduct = productDAO.findById(productId);
+        if (optionalProduct.isPresent()) {
+            return ResponseEntity.ok(optionalProduct.get());
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    //si queremos hacer un servicio para insertar un nuevo valor a la base de datos.
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product newProduct = productDAO.save(product);
+        return ResponseEntity.ok(newProduct);
+    }
+
+    //Ahora vamos a hacer un método para borrar un producto.
+    @DeleteMapping(value = "{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId) {
+        productDAO.deleteById(productId);
+        return ResponseEntity.ok(null);
+    }
+
+    //Ahora haremos una actualización de nuestro producto. El nombre no el id
+    @PutMapping
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+        Optional<Product> optionalProduct = productDAO.findById(product.getId());
+        if (optionalProduct.isPresent()) {
+            Product updateProduct = optionalProduct.get();
+            updateProduct.setName(product.getName());
+            productDAO.save(updateProduct);
+            return ResponseEntity.ok(updateProduct);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
